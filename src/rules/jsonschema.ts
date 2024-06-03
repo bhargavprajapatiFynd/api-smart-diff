@@ -37,6 +37,7 @@ const multipleOfClassifier: Rule = [
 ]
 
 const nonBreakingIfDefault: DiffTypeFunc = ({ after, up }) => up(2).after?.properties?.[after]?.default !== undefined ? nonBreaking : breaking
+const nonBreakingIfNotRequired: DiffTypeFunc = ({ after, up }) => up(2).after?.properties?.[after]?.required == true ? nonBreaking : breaking
 
 export const jsonSchemaRules = (rootRule: Rule = allUnclassified): Rules => ({
   "/": rootRule,
@@ -84,8 +85,8 @@ export const jsonSchemaRules = (rootRule: Rule = allUnclassified): Rules => ({
   },
   "/items": () => jsonSchemaRules(addNonBreaking),
   "/properties": {
-    "/": [breakingIfAfterIsRequired, nonBreaking, breaking],
-    "/*": () => jsonSchemaRules(addNonBreaking),
+    "/": [breaking, nonBreaking, breaking],
+    "/*": () => jsonSchemaRules([nonBreakingIfNotRequired, nonBreaking, breaking]),
   },
   "/additionalProperties": () => jsonSchemaRules([breaking, breaking, breakingIfAfterTrue]),
   "/description": allAnnotation,
