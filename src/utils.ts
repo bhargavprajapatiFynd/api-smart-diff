@@ -37,7 +37,9 @@ export class PathPointer implements Iterable<PathItem> {
 
 export const breakingIf = (v: boolean): DiffType => (v ? breaking : nonBreaking)
 export const breakingIfAfterTrue: DiffTypeFunc = ({ after }): DiffType => breakingIf(after)
-export const breakingIfAfterIsRequired: DiffTypeFunc = ({ after }): DiffType => breakingIf(!!after.required && after.required == true)
+export const breakingIfAfterIsRequired: DiffTypeFunc = ({ after, before, up }): DiffType => {
+  return breakingIf(!!after.required && after.required == true)
+}
 
 export const added = (path: PathPointer, after: any): JsonDiff => ({ path: path.items, after, action: DiffAction.add })
 export const removed = (path: PathPointer, before: any): JsonDiff => ({ path: path.items, before, action: DiffAction.remove })
