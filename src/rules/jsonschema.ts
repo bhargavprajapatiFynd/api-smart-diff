@@ -85,8 +85,8 @@ export const jsonSchemaRules = (rootRule: Rule = allUnclassified): Rules => ({
   },
   "/items": () => jsonSchemaRules(addNonBreaking),
   "/properties": {
-    "/": [breaking, nonBreaking, breaking],
-    "/*": () => jsonSchemaRules([nonBreakingIfNotRequired, nonBreaking, breaking]),
+    "/": [nonBreakingIfNotRequired, nonBreaking, breaking],
+    "/*": () => jsonSchemaRules(addNonBreaking),
   },
   "/additionalProperties": () => jsonSchemaRules([breaking, breaking, breakingIfAfterTrue]),
   "/description": allAnnotation,
