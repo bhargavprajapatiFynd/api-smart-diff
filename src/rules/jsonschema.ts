@@ -1,4 +1,4 @@
-import { breakingIf, breakingIfAfterTrue } from "../utils"
+import { breakingIf, breakingIfAfterIsRequired, breakingIfAfterTrue } from "../utils"
 import { DiffTypeFunc, Rule, Rules } from "../types"
 import {
   breaking, nonBreaking, addNonBreaking, 
@@ -84,7 +84,7 @@ export const jsonSchemaRules = (rootRule: Rule = allUnclassified): Rules => ({
   },
   "/items": () => jsonSchemaRules(addNonBreaking),
   "/properties": {
-    "/": [breaking, nonBreaking, breaking],
+    "/": [breakingIfAfterIsRequired, nonBreaking, breaking],
     "/*": () => jsonSchemaRules(addNonBreaking),
   },
   "/additionalProperties": () => jsonSchemaRules([breaking, breaking, breakingIfAfterTrue]),
