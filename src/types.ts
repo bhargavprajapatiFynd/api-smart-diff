@@ -24,7 +24,6 @@ export interface IChangeContext {
   after: any
   up: (n?: number) => IChangeContext
   root: IChangeContext
-  _path: string[]
 }
 
 export type DiffTypeFunc = (ctx: IChangeContext) => DiffType

@@ -39,7 +39,7 @@ const multipleOfClassifier: Rule = [
 const nonBreakingIfDefault: DiffTypeFunc = ({ after, up }) => up(2).after?.properties?.[after]?.default !== undefined ? nonBreaking : breaking
 
 // if property added
-const breakingIfNewFieldRequiredOrInnerFieldRequired: DiffTypeFunc = ({ _path, up }) => {
+const breakingIfNewFieldRequiredOrInnerFieldRequired: DiffTypeFunc = ({ _path, up } : any) => {
   // check if properties inner field is required
   if (up(1).after.required && up(1).after.required.length) {
     return breaking
@@ -51,7 +51,7 @@ const breakingIfNewFieldRequiredOrInnerFieldRequired: DiffTypeFunc = ({ _path, u
   return nonBreaking
 }
 
-const breakingIfCurrentFieldIsRequired: DiffTypeFunc = ({ _path, up }) => {
+const breakingIfCurrentFieldIsRequired: DiffTypeFunc = ({ _path, up } : any) => {
   if (up(2).after.required) {
     if (up(2).after.required.includes(_path.pop())) {
       return breaking
