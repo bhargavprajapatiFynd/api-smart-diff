@@ -52,7 +52,6 @@ const breakingIfNewFieldRequiredOrInnerFieldRequired: DiffTypeFunc = ({ _path, u
 }
 
 const breakingIfCurrentFieldIsRequired: DiffTypeFunc = ({ _path, up }) => {
-  console.log(_path.join("."));
   if (up(2).after.required) {
     if (up(2).after.required.includes(_path.pop())) {
       return breaking
