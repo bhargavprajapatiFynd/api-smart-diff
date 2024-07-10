@@ -38,6 +38,29 @@ const multipleOfClassifier: Rule = [
 
 const nonBreakingIfDefault: DiffTypeFunc = ({ after, up }) => up(2).after?.properties?.[after]?.default !== undefined ? nonBreaking : breaking
 
+// if property added
+const breakingIfNewFieldRequiredOrInnerFieldRequired: DiffTypeFunc = ({ _path, up }) => {
+  // check if properties inner field is required
+  if (up(1).after.required && up(1).after.required.length) {
+    return breaking
+  }
+  // check if property itself is required
+  if (up(3).after.required && up(3).after.required.includes(_path.pop())) {
+    return breaking
+  }
+  return nonBreaking
+}
+
+const breakingIfCurrentFieldIsRequired: DiffTypeFunc = ({ _path, up }) => {
+  console.log(_path.join("."));
+  if (up(2).after.required) {
+    if (up(2).after.required.includes(_path.pop())) {
+      return breaking
+    }
+  }
+  return nonBreaking
+}
+
 export const jsonSchemaRules = (rootRule: Rule = allUnclassified): Rules => ({
   "/": rootRule,
   "/title": allAnnotation,
@@ -84,8 +107,8 @@ export const jsonSchemaRules = (rootRule: Rule = allUnclassified): Rules => ({
   },
   "/items": () => jsonSchemaRules(addNonBreaking),
   "/properties": {
-    "/": [breaking, nonBreaking, breaking],
-    "/*": () => jsonSchemaRules(addNonBreaking),
+    "/": [breakingIfNewFieldRequiredOrInnerFieldRequired, nonBreaking, breaking],
+    "/*": () => jsonSchemaRules([breakingIfCurrentFieldIsRequired, breaking, breaking]),
   },
   "/additionalProperties": () => jsonSchemaRules([breaking, breaking, breakingIfAfterTrue]),
   "/description": allAnnotation,
