@@ -1,6 +1,7 @@
 export * from "./asyncapi2"
 export * from "./openapi3"
 export * from "./sdk"
+export * from "./webhooks"
 export * from "./jsonschema"
 export * from "./servicenode"
 export * from "./swagger2"
